@@ -87,7 +87,6 @@ while i_column < Row:
       i_row+=1
     if(free_variable_status):
       print("free variable")
-      free_variable.append(c)
       i_per_column = c 
       while i_per_column < (column-1):
         if(result_matrix[r][i_per_column] != 0):
@@ -105,6 +104,7 @@ while i_column < Row:
           a.append(c)
           a.append(i_per_column)
           col_permu.append(a)
+          free_variable.append(i_per_column)
           c+=1
           r+=1
           break
