@@ -46,6 +46,7 @@ i_column = 0
 i_row = 0
 i_per_column = 0
 free_variable_status = False
+column_permutation_status = False
 
 for i in range(Column-1):
   variable_value.append(0)
@@ -88,34 +89,35 @@ while i_column < Row:
     if(free_variable_status):
       print("free variable")
       i_per_column = c 
-      while i_per_column < (column-1):
+      while i_per_column < (Column-1):
         if(result_matrix[r][i_per_column] != 0):
           print("Column Permutation")
-          temp = P_matrix[c]
-          P_matrix[c] = P_matrix[i_per_column]
-          P_matrix[i_per_column] = temp
-          result_matrix = EM.matrix_multiply(result_matrix, P_matrix)
+          for i in range(Row):
+            temp = result_matrix[i][c]
+            result_matrix[i][c] = result_matrix[i][i_per_column]
+            result_matrix[i][i_per_column] = temp
           result_matrix = EM.cal_EM(result_matrix, r, c, E_matrix, Row, Column)
           EM.show_matrix(result_matrix, Row, Column)
-          temp = P_matrix[c]
-          P_matrix[c] = P_matrix[i_per_column]
-          P_matrix[i_per_column] = temp
           a = []
           a.append(c)
           a.append(i_per_column)
           col_permu.append(a)
-          free_variable.append(i_per_column)
+          a = []
+          a.append(r)
+          a.append(c)
+          pivot_position.append(a)
           c+=1
           r+=1
           break
         i_per_column+=1
   i_column+=1
 
-if Row < (Column-1):
-  col = Row
+if len(pivot_position) < Column:
+  col = len(pivot_position)
   while col < Column-1:
     free_variable.append(col)
     col+=1
+
 print("Index Column Free Variable: " + str(free_variable))
 print("Pivot Position: " + str(pivot_position))
 print("Column Permutation: " + str(col_permu))
@@ -166,16 +168,18 @@ if(consistent):
       row = pivot[0]
       column = pivot[1]
       for i in free_variable:
-        result_matrix[row][Column-1] += result_matrix[row][i]
+        result_matrix[row][Column-1] -= result_matrix[row][i]
       a = result_matrix[row][Column-1]/result_matrix[row][column]
       variable_value[column] = a
+  print(variable_value)
   if(col_permu):
-    for i in col_permu:
+    for i in reversed(col_permu):
       col1 = i[0]
       col2 = i[1]
       temp = variable_value[col1]
       variable_value[col1] = variable_value[col2]
       variable_value[col2] = temp
+      print(variable_value)
       
   #show aswer
   index = 1
