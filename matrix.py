@@ -171,7 +171,6 @@ if(consistent):
         result_matrix[row][Column-1] -= result_matrix[row][i]
       a = result_matrix[row][Column-1]/result_matrix[row][column]
       variable_value[column] = a
-  print(variable_value)
   if(col_permu):
     for i in reversed(col_permu):
       col1 = i[0]
@@ -179,7 +178,6 @@ if(consistent):
       temp = variable_value[col1]
       variable_value[col1] = variable_value[col2]
       variable_value[col2] = temp
-      print(variable_value)
       
   #show aswer
   index = 1
